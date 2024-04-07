@@ -3,7 +3,6 @@ package praktikum.api;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
-import static praktikum.api.BaseAPI.getRequest;
 import static praktikum.api.BaseAPI.getRequestNoAuth;
 
 public class IngredientAPI {
