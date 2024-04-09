@@ -19,9 +19,11 @@ import static praktikum.user.User.createWithoutPass;
 
 @RunWith(Parameterized.class)
 public class AuthUserNegativeTest extends UserTest {
+
     public AuthUserNegativeTest(User user) {
         super.user = user;
     }
+
     @Parameterized.Parameters()
     public static Object[][] getUsers() {
         return new Object[][]{
@@ -29,25 +31,18 @@ public class AuthUserNegativeTest extends UserTest {
                 {createWithoutEmail()}
         };
     }
+
     @Test
     @DisplayName("Метод проверки статус-кода при авторизации Пользователя с некорректными данными для входа")
     @Description("Метод проверяет соответствие статус-кода ожидаемому (401)")
     public void checkAuthUserNegativeStatusCode(){
         authUser(user).then()
                 .statusCode(SC_UNAUTHORIZED);
-    }
-    @Test
-    @DisplayName("Метод проверки параметра success при авторизации Пользователя с некорректными данными для входа")
-    @Description("Метод проверяет соответствие параметра success ожидаемому (false)")
-    public void checkAuthUserNegativeSuccess(){
+
         assertFalse(authUser(user)
                 .as(CreateOrAuthUserResponse.class)
                 .isSuccess());
-    }
-    @Test
-    @DisplayName("Метод проверки параметра message при авторизации Пользователя с некорректными данными для входа")
-    @Description("Метод проверяет соответствие текста ошибки ожидаемому")
-    public void checkAuthUserNegativeMessage(){
+
         assertEquals(WRONG_CREDITS_AUTH,
                 authUser(user)
                         .as(CreateOrAuthUserResponse.class)

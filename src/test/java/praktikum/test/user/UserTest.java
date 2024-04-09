@@ -9,7 +9,9 @@ import static praktikum.user.User.create;
 
 public abstract class UserTest {
     protected User user;
+
     protected Response response;
+
     @Step("Метод создания готового Пользователя")
     protected void setUpUsualUser(){
         user = create();

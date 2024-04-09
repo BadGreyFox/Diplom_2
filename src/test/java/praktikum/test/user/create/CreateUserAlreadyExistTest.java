@@ -14,34 +14,28 @@ import static org.junit.Assert.assertFalse;
 import static praktikum.api.UserAPI.createUser;
 import static praktikum.api.UserAPI.deleteUser;
 import static praktikum.constance.Errors.ALREADY_EXISTS;
+import static praktikum.user.User.create;
 
 public class CreateUserAlreadyExistTest extends UserTest {
     @Before
     public void setAndCreateUser(){
-        setUpUsualUser();
+        user = create();
+        response = createUser(user);
     }
     @Test
-    @DisplayName("Метод проверки статус-кода при повторном создании Пользователя с одинаковыми данными")
-    @Description("Метод проверяет соответствие статус-кода ожидаемому (403)")
+    @DisplayName("Метод проверки создании Пользователей с одинаковыми данными")
+    @Description("Метод проверяет соответствие статус-кода ожидаемому (403) и body на соответствие и наличие")
     public void checkCreatingExistingUserStatusCode(){
         createUser(user)
                 .then()
                 .assertThat()
                 .statusCode(SC_FORBIDDEN);
-    }
-    @Test
-    @DisplayName("Метод проверки параметра success при повторном создании Пользователя с одинаковыми данными")
-    @Description("Метод проверяет соответствие параметра success ожидаемому (false)")
-    public void checkCreatingExistingUserSuccess(){
+
         assertFalse("Ожидается параметр false",
                 createUser(user)
                         .as(CreateOrAuthUserResponse.class)
                         .isSuccess());
-    }
-    @Test
-    @DisplayName("Метод проверки параметра message при повторном создании Пользователя с одинаковыми данными")
-    @Description("Метод проверяет соответствие сообщения об ошибке ожидаемому")
-    public void checkCreatingExistingUserMessage(){
+
         assertEquals("Метод вернул некорректное сообщение об ошибке",
                 ALREADY_EXISTS,
                 createUser(user)
@@ -49,8 +43,6 @@ public class CreateUserAlreadyExistTest extends UserTest {
                         .getMessage());
     }
     @After
-    @DisplayName("Метод удаления созданного Пользователя")
-    @Description("Метод удаляет Пользователя после создания в тестовых методах")
     public void cleanUp(){
         deleteUser(response
                 .as(CreateOrAuthUserResponse.class)

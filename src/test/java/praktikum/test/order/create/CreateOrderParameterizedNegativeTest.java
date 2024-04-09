@@ -20,7 +20,9 @@ import static praktikum.constance.Errors.NO_INGREDIENTS;
 @RunWith(Parameterized.class)
 public class CreateOrderParameterizedNegativeTest{
     private final String message;
+
     private final CreateOrderReq req;
+
     public CreateOrderParameterizedNegativeTest(CreateOrderReq req, String message) {
         this.req = req;
         this.message = message;
@@ -33,25 +35,18 @@ public class CreateOrderParameterizedNegativeTest{
                 {new CreateOrderReq(List.of("61c0c5a71d1f82001bdaaa61")), INVALID_INGREDIENTS}
         };
     }
+
     @Test
-    @DisplayName("Метод проверки статус-кода при создании заказа с некорректными ингредиентами")
-    @Description("Метод проверяет соответствие статус-кода ожидаемому (400)")
+    @DisplayName("Метод проверки создания заказа с некорректными ингредиентами")
+    @Description("Метод проверяет соответствие статус-кода ожидаемому (400) и body на наличие и соответствие")
     public void checkCreateOrderNegativeStatusCode(){
         createOrder(req).
                 then()
                 .statusCode(SC_BAD_REQUEST);
-    }
-    @Test
-    @DisplayName("Метод проверки success при создании заказа с некорректными ингредиентами")
-    @Description("Метод проверяет соответствие success ожидаемому (false)")
-    public void checkCreateOrderNegativeSuccess(){
+
         assertFalse("Заказ не должен быть создан, success = true",
                 createOrder(req).as(CreateOrderResponse.class).isSuccess());
-    }
-    @Test
-    @DisplayName("Метод проверки message при создании заказа с некорректными ингредиентами")
-    @Description("Метод проверяет соответствие текста ошибки ожидаемому")
-    public void checkCreateOrderNegativeMessage(){
+
         assertEquals("Сообщение об ошибке не совпадает с ожидаемым",
                 message,
                 createOrder(req).as(CreateOrderResponse.class).getMessage()

@@ -11,6 +11,7 @@ import praktikum.test.order.OrderTest;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.junit.Assert.*;
 import static praktikum.api.IngredientAPI.getIngredients;
+import static praktikum.test.steps.OrderSteps.setUpOrderNoAuth;
 
 public class CreateOrderWithoutAuthTest extends OrderTest {
     @Before
@@ -21,6 +22,7 @@ public class CreateOrderWithoutAuthTest extends OrderTest {
 
         responseBody = response.as(CreateOrderResponse.class);
     }
+
     @Test
     @DisplayName("Метод проверки статус-кода при создании заказа без авторизации")
     @Description("Метод проверяет соответствие статус-кода ожидаемому (200)")
@@ -28,25 +30,13 @@ public class CreateOrderWithoutAuthTest extends OrderTest {
         response.
                 then()
                 .statusCode(SC_OK);
-    }
-    @Test
-    @DisplayName("Метод проверки success при создании заказа без авторизации")
-    @Description("Метод проверяет соответствие success ожидаемому (true)")
-    public void checkCreateOrderNoAuthUserSuccess(){
+
         assertTrue("Заказ не создан, success = false",
                 responseBody.isSuccess());
-    }
-    @Test
-    @DisplayName("Метод проверки name при создании заказа без авторизации")
-    @Description("Метод проверяет наличие параметра name")
-    public void checkCreateOrderNoAuthUserName(){
+
         assertNotNull("В ответе метода не пришло имя заказа",
                 responseBody.getName());
-    }
-    @Test
-    @DisplayName("Метод проверки message при создании заказа без авторизации")
-    @Description("Метод проверяет соответствие текста ошибки ожидаемому")
-    public void checkCreateOrderNoAuthUserOwnerNumber(){
+
         assertNotEquals("В ответе метода не пришел номер заказа",
                 0,
                 responseBody.getOrder().getNumber());

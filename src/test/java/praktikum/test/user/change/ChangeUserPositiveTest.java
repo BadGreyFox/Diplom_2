@@ -18,10 +18,13 @@ import static praktikum.user.User.create;
 
 public class ChangeUserPositiveTest extends UserTest {
     private User user;
+
     private String token;
+
     @Before
     public void setCreateAndChangeUser(){
         user = create();
+
         token = createUser(create())
                 .as(CreateOrAuthUserResponse.class)
                 .getToken();
@@ -29,24 +32,16 @@ public class ChangeUserPositiveTest extends UserTest {
         response = changeUser(user, token);
     }
     @Test
-    @DisplayName("Метод проверки статус-кода при изменении авторизованного Пользователя")
-    @Description("Метод проверяет соответствие статус-кода ожидаемому (200)")
+    @DisplayName("Метод проверки изменения авторизованного Пользователя")
+    @Description("Метод проверяет соответствие статус-кода ожидаемому (200) и body на соответствие и наличие")
     public void checkChangeUserStatusCode(){
         response.
                 then()
                 .statusCode(SC_OK);
-    }
-    @Test
-    @DisplayName("Метод проверки параметра success при изменении авторизованного Пользователя")
-    @Description("Метод проверяет соответствие параметра success ожидаемому (true)")
-    public void checkChangeUserSuccess(){
+
         assertTrue("Пользователь не изменен, success = false",
                 response.as(ChangeUserResponse.class).isSuccess());
-    }
-    @Test
-    @DisplayName("Метод проверки email при изменении авторизованного Пользователя")
-    @Description("Метод проверяет соответствие выходного параметра email переданному на вход")
-    public void checkChangeUserReturnEmail(){
+
         assertEquals("Ответ метода вернул некорректные данные по email",
                 user.
                         getEmail().toLowerCase(),
@@ -54,11 +49,9 @@ public class ChangeUserPositiveTest extends UserTest {
                         getUser()
                         .getEmail().toLowerCase());
     }
+
     @After
-    @DisplayName("Метод удаления созданного Пользователя")
-    @Description("Метод удаляет Пользователя после создания в тестовых методах")
     public void cleanUp(){
         deleteUser(token);
     }
-
 }

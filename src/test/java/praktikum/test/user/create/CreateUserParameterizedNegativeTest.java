@@ -31,29 +31,22 @@ public class CreateUserParameterizedNegativeTest extends UserTest {
         };
     }
     @Test
-    @DisplayName("Метод проверки статус-кода при создании Пользователя при некорректных данных")
-    @Description("Метод проверяет соответствие статус-кода ожидаемому (403)")
+    @DisplayName("Метод проверки создания Пользователя при некорректных данных")
+    @Description("Метод проверяет соответствие статус-кода ожидаемому (403) и body на соответствие и наличие")
     public void checkCreatingUserNegativeStatusCode(){
         createUser(user)
                 .then()
                 .statusCode(SC_FORBIDDEN);
-    }
-    @Test
-    @DisplayName("Метод проверки параметра success при создании Пользователя при некорректных данных")
-    @Description("Метод проверяет соответствие параметра success ожидаемому (false)")
-    public void checkCreatingUserNegativeSuccess(){
+
         assertFalse("Ожидается параметр false",
                 createUser(user)
-                .as(CreateOrAuthUserResponse.class)
-                .isSuccess());
-    }
-    @Test
-    @DisplayName("Метод проверки параметра message при создании Пользователя при некорректных данных")
-    @Description("Метод проверяет соответствие сообщения об ошибке ожидаемому")
-    public void checkCreatingUserNegativeMessage(){
-        assertEquals(WRONG_CREDITS_REG,
+                        .as(CreateOrAuthUserResponse.class)
+                        .isSuccess());
+
+        assertEquals("Текст ошибки не совпадает с ожидаемым",
+                WRONG_CREDITS_REG,
                 createUser(user)
-                .as(CreateOrAuthUserResponse.class)
-                .getMessage());
+                        .as(CreateOrAuthUserResponse.class)
+                        .getMessage());
     }
 }

@@ -14,10 +14,12 @@ import static praktikum.api.OrderAPI.getOrdersOnClient;
 import static praktikum.constance.Errors.NON_AUTH_USER;
 
 public class GetOrdersNoAuthUserTest extends OrderTest {
+
     @Before
     public void setUpResponse(){
         response = getOrdersOnClient();
     }
+
     @Test
     @DisplayName("Метод проверки статус-кода при получении списка заказов без авторизованного пользователя")
     @Description("Метод проверяет соответствие статус-кода ожидаемому (401)")
@@ -26,18 +28,10 @@ public class GetOrdersNoAuthUserTest extends OrderTest {
                 .then()
                 .assertThat()
                 .statusCode(SC_UNAUTHORIZED);
-    }
-    @Test
-    @DisplayName("Метод проверки параметра success при получении списка заказов без авторизованного пользователя")
-    @Description("Метод проверяет соответствие параметра success ожидаемому (false)")
-    public void checkCreateOrderNoAuthUserSuccess(){
+
         assertFalse("Заказ не создан, success = false",
                 response.as(GetOrdersOnClient.class).isSuccess());
-    }
-    @Test
-    @DisplayName("Метод проверки параметра message при получении списка заказов без авторизованного пользователя")
-    @Description("Метод проверяет соответствие текста ошибки ожидаемому")
-    public void checkCreateOrderNoAuthUserMessage(){
+
         assertEquals("Сообщение об ошибке не совпадает с ожидаемым",
                 NON_AUTH_USER,
                 response.as(GetOrdersOnClient.class).getMessage());
